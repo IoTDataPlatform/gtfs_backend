@@ -5,8 +5,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/gtfs
-    username: gtfs
-    password: gtfs
+    username: postgres #gtfs
+    password: postgres #gtfs
   jpa:
     hibernate:
       ddl-auto: none
