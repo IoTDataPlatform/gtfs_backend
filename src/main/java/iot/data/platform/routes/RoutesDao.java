@@ -63,12 +63,41 @@ public class RoutesDao {
         return out;
     }
 
+    public List<TripDto> findTripsByRoute(String routeId) {
+        final String sql = """
+            SELECT
+                trip_id,
+                service_id,
+                trip_headsign,
+                direction_id,
+                shape_id,
+                trip_short_name,
+                block_id
+            FROM trips
+            WHERE route_id = ?
+            ORDER BY COALESCE(direction_id, 0), COALESCE(trip_headsign, ''), trip_id
+            """;
+        return jdbc.query(sql, (rs, i) -> mapTrip(rs), routeId);
+    }
+
     private static StopDto mapStop(ResultSet rs) throws SQLException {
         return new StopDto(
                 rs.getString("id"),
                 rs.getString("name"),
                 rs.getDouble("lat"),
                 rs.getDouble("lon")
+        );
+    }
+
+    private static TripDto mapTrip(ResultSet rs) throws SQLException {
+        return new TripDto(
+                rs.getString("trip_id"),
+                rs.getString("service_id"),
+                rs.getString("trip_headsign"),
+                rs.getObject("direction_id", Integer.class),
+                rs.getString("shape_id"),
+                rs.getString("trip_short_name"),
+                rs.getString("block_id")
         );
     }
 }

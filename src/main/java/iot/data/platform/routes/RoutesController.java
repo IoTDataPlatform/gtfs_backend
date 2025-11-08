@@ -29,4 +29,9 @@ public class RoutesController {
 
         return new RouteGeometryDto(routeId, stops, shapes);
     }
+
+    @GetMapping("/{routeId}/trips")
+    public List<TripDto> trips(@PathVariable String routeId) {
+        return dao.findTripsByRoute(routeId);
+    }
 }

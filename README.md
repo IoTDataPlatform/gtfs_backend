@@ -1,6 +1,6 @@
 # GET endpoints
 
-GET http://localhost:8080/api/stops/in-rect?topLeftLat={lat}&topLeftLon={lon}&bottomRightLat={lat}&bottomRightLon={lon}  
+GET http://localhost:8081/api/stops/in-rect?topLeftLat={lat}&topLeftLon={lon}&bottomRightLat={lat}&bottomRightLon={lon}  
 — Возвращает все остановки внутри прямоугольника (координаты и названия).
 
 ```json
@@ -20,7 +20,7 @@ GET http://localhost:8080/api/stops/in-rect?topLeftLat={lat}&topLeftLon={lon}&bo
 ]
 ```
 
-GET http://localhost:8080/api/stops/{stopId}/routes  
+GET http://localhost:8081/api/stops/{stopId}/routes  
 — Возвращает список всех маршрутов, проходящих через указанную остановку.
 
 ```json
@@ -40,7 +40,7 @@ GET http://localhost:8080/api/stops/{stopId}/routes
 ]
 ```
 
-GET http://localhost:8080/api/stops/{stopId}/routes/{routeId}/times?date=YYYY-MM-DD  
+GET http://localhost:8081/api/stops/{stopId}/routes/{routeId}/times?date=YYYY-MM-DD  
 — Возвращает все времена (HH:MM), когда указанный маршрут останавливается на этой остановке в указанную дату.
 
 ```json
@@ -61,7 +61,7 @@ GET http://localhost:8080/api/stops/{stopId}/routes/{routeId}/times?date=YYYY-MM
 }
 ```
 
-GET http://localhost:8080/api/routes/{routeId}/geometry  
+GET http://localhost:8081/api/routes/{routeId}/geometry  
 — Возвращает геометрию маршрута (линия) и список его остановок с координатами.
 
 ```json
@@ -105,7 +105,7 @@ GET http://localhost:8080/api/routes/{routeId}/geometry
   
 ```
 
-GET http://localhost:8080/api/trips/{tripId}/shape
+GET http://localhost:8081/api/trips/{tripId}/shape
 — Геометрия рейса: список точек (lat, lon, sequence).
 
 ```json
@@ -123,7 +123,7 @@ GET http://localhost:8080/api/trips/{tripId}/shape
 }
 ```
 
-GET http://localhost:8080/api/trips/{tripId}/stops
+GET http://localhost:8081/api/trips/{tripId}/stops
 — Все остановки рейса с координатами, порядком следования, временем прибытия и отправки.
 
 ```json
@@ -142,4 +142,40 @@ GET http://localhost:8080/api/trips/{tripId}/stops
     }
   ]
 }
+```
+
+GET http://localhost:8081/api/position_redis/{trip_id} или
+GET http://localhost:8081/api/position_redis/{trip_id}?freshSeconds=84600 с большим окном свежести(по дефолту 600)
+— Координаты автобуса по рейсу.
+
+```json
+{
+  "tripId": "14010000693724857",
+  "vehicleId": "9031001000500681",
+  "lat": 59.3290482,
+  "lon": 18.0753174,
+  "speed": 0.0,
+  "bearing": 31.0,
+  "routeId": null,
+  "status": null,
+  "lastUpdated": "2025-11-08T12:54:51Z",
+  "inTransit": true
+}
+```
+
+GET http://localhost:8081/api/routes/{routeId}/trips
+— Все рейсы по маршруту.
+
+```json
+[
+  {
+    "tripId": "14010000664276047",
+    "serviceId": "1",
+    "headsign": null,
+    "directionId": 0,
+    "shapeId": "1014010000560262054",
+    "shortName": null,
+    "blockId": null
+  }
+]
 ```
